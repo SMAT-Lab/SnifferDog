@@ -1,4 +1,12 @@
-### Hi there 👋
+### Dependencies
+### API bank  👋
+Step 1 unzip API bank data
+
+```console
+unzip API-bank-data.zip 
+```
+Step 2 Get summary of API bank data
+
 
 <!--
 **sniffer-dog/sniffer-dog** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
