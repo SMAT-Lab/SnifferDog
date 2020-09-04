@@ -1,4 +1,10 @@
 ### Dependencies
+Python>=3.7
+wheel_inspect==1.6.0
+ipynb==0.5.1
+nbconvert==5.5.0
+nbformat==5.0.7
+
 ### API bank  👋
 Step 1 unzip API bank data
 
