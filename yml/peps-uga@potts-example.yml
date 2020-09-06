@@ -83,5 +83,4 @@ dependencies:
     - webencodings==0.5.1
     - websocket-client==0.57.0
     - zipp==1.2.0
-prefix: /data/sda/jiawei/miniconda3/envs/our_peps-uga@potts-example
 

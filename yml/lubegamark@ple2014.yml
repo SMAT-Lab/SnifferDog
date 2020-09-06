@@ -69,5 +69,4 @@ dependencies:
     - webencodings==0.5.1
     - xlrd==1.2.0
     - zipp==1.2.0
-prefix: /data/sda/jiawei/miniconda3/envs/our_lubegamark@ple2014
 

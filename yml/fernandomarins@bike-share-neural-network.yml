@@ -68,5 +68,4 @@ dependencies:
     - wcwidth==0.2.5
     - webencodings==0.5.1
     - zipp==3.1.0
-prefix: /data/sda/jiawei/miniconda3/envs/our_fernandomarins@bike-share-neural-network
 

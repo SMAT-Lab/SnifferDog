@@ -77,5 +77,4 @@ dependencies:
     - webencodings==0.5.1
     - zc-lockfile==2.0
     - zipp==1.2.0
-prefix: /data/sda/jiawei/miniconda3/envs/our_aeserran@Twitter-Python-LEMI-1481881775100
 

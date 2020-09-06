@@ -64,5 +64,4 @@ dependencies:
     - wcwidth==0.2.5
     - webencodings==0.5.1
     - zipp==1.2.0
-prefix: /data/sda/jiawei/miniconda3/envs/our_anniecherk@scikit_learn_and_keras_demo_fall_2017
 

@@ -82,5 +82,4 @@ dependencies:
     - webencodings==0.5.1
     - widgetsnbextension==1.2.6
     - zipp==3.1.0
-prefix: /data/sda/jiawei/miniconda3/envs/our_mzgubic@dRdemo
 

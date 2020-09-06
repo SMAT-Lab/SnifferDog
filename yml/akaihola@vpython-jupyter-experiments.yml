@@ -91,5 +91,4 @@ dependencies:
     - widgetsnbextension==3.5.1
     - yarl==1.5.1
     - zipp==1.2.0
-prefix: /data/sda/jiawei/miniconda3/envs/our_akaihola@vpython-jupyter-experiments
 

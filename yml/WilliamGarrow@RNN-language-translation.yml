@@ -85,5 +85,4 @@ dependencies:
     - werkzeug==1.0.1
     - wrapt==1.12.1
     - zipp==1.2.0
-prefix: /data/sda/jiawei/miniconda3/envs/our_WilliamGarrow@RNN-language-translation
 

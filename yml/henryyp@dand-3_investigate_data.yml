@@ -67,5 +67,4 @@ dependencies:
     - webencodings==0.5.1
     - xlrd==1.2.0
     - zipp==3.1.0
-prefix: /data/sda/jiawei/miniconda3/envs/our_henryyp@dand-3_investigate_data
 

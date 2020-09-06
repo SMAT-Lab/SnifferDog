@@ -69,5 +69,4 @@ dependencies:
     - wcwidth==0.2.5
     - webencodings==0.5.1
     - zipp==1.2.0
-prefix: /data/sda/jiawei/miniconda3/envs/our_henriqueluzz@NeuralNetNumpy
 

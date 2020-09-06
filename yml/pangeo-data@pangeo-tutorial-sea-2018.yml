@@ -69,5 +69,4 @@ dependencies:
     - webencodings==0.5.1
     - xarray==0.16.0
     - zipp==3.1.0
-prefix: /data/sda/jiawei/miniconda3/envs/our_pangeo-data@pangeo-tutorial-sea-2018
 

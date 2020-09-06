@@ -84,5 +84,4 @@ dependencies:
     - werkzeug==1.0.1
     - wrapt==1.12.1
     - zipp==3.1.0
-prefix: /data/sda/jiawei/miniconda3/envs/our_Ujjwal-9@GAN-Generating-Digits
 
