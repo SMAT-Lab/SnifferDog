@@ -316,6 +316,8 @@ def process_single_module(module_path):
 
 def main():
     lib_dir = sys.argv[1]
+    lib_name = sys.argv[2]
+    lib_name =  lib_dir.split('/')[-1]
     versions = os.listdir(lib_dir)
     versions.sort(key=lambda x:parse_version(x))
 
@@ -324,7 +326,7 @@ def main():
 
     for v in versions:
         v_dir = os.path.join(lib_dir, v)
-        entry_points  = process_wheel(v_dir, l_name)
+        entry_points  = process_wheel(v_dir, lib_name)
         if entry_points is not None:
             API_data['module'] = entry_points
             for ep in entry_points:
@@ -337,7 +339,7 @@ def main():
                   else:
                       API_data['API'][name] += [v]
 
-    f = open("{}.json".format(l_name), 'w')
+    f = open("{}.json".format(lib_name), 'w')
     f.write(json.dumps(API_data))
     f.close()
 
