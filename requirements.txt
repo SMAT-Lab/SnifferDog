@@ -3,3 +3,4 @@ ipynb==0.5.1
 nbconvert==5.5.0
 nbformat==5.0.7
 wget==3.2
+requests==2.24.0
