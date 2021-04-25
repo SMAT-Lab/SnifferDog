@@ -1,48 +1,67 @@
-import os
-import json
 import ast
+from  _ast import *
+import pkgutil
 
-def get_path_by_extension(root_dir, flag='.py'):
+def iter_fields(node):
+    """
+    Yield a tuple of ``(fieldname, value)`` for each field in ``node._fields``
+    that is present on *node*.
+    """
+    for field in node._fields:
+        try:
+            yield field, getattr(node, field)
+        except AttributeError:
+            pass
+
+def iter_child_nodes(node):
+    """
+    Yield all direct child nodes of *node*, that is, all fields that are nodes
+    and all items of fields that are lists of nodes.
+    """
+    for name, field in iter_fields(node):
+        if isinstance(field, AST):
+            yield field
+        elif isinstance(field, list):
+            for item in field:
+                if isinstance(item, AST):
+                    yield item
+
+def find_local_modules(import_smts):
+    smts = "\n".join(import_smts)
+    tree = ast.parse(smts, mode='exec')
+    search_path = ['.']
+    module_names = set()
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import) :
+            for nn in node.names:
+                module_names.add(nn.name.split('.')[0])
+        if isinstance(node, ast.ImportFrom):
+            if node.level==2:
+                search_path += ['..']
+            if node.module is not None:
+                module_names.add(node.module.split('.')[0])
+            else:
+                for nn in node.names:
+                    module_names.add(nn.name)
+    module_name_plus = ['random', 'unittest', 'warning', 'os', 'pandas', 'IPython', 'seaborn', 'matplotlib', 'sklearn', 'numpy', 'scipy', 'math', 'matplotlib']
+    search_path = list(set(search_path))
+    all_modules = [x[1] for x in pkgutil.iter_modules(path=search_path)]
+    all_modules += list(sys.builtin_module_names) + module_name_plus
+    result = []
+    for m_name in module_names:
+        if m_name not in all_modules:
+            result  += [m_name]
+    return result
+
+def get_path_by_extension(root_dir, num_of_required_paths, flag='.ipynb'):
     paths = []
     for root, dirs, files in os.walk(root_dir):
-        files = [f for f in files if not f[0] == '.']  # skip hidden files such as git files
+        files = [f for f in files if not f[0] == '.'] 
         dirs[:] = [d for d in dirs if not d[0] == '.']
-        for f in files:
-            if f.endswith(flag):
-                paths.append(os.path.join(root, f))
+        for file in files:
+            if file.endswith(flag):
+                paths.append(os.path.join(root, file))
+                if len(paths) == num_of_required_paths:
+                    return paths
     return paths
-
-def get_code_list(path):
-    content = open(path).read()
-    try:
-        content = json.loads(content)
-        if 'worksheets' in content:
-            cells = content['worksheets'][0]['cells']
-            source_flag = 'input'
-        else:
-            cells = content['cells']
-            source_flag = 'source'
-        cells = list(filter(lambda x:x['cell_type']=='code', cells))
-        sources = []
-        for cell in cells:
-            # filter out cells without execution count
-            if 'execution_count' in cell and cell['execution_count'] is not None:
-                # remove magic functions
-                code_lines = cell[source_flag]
-                if code_lines is not None:
-                    code_lines = list(filter(lambda x:len(x)>0 and x[0] not in ['%', '!', '#'], code_lines)) #
-                    s = "".join(code_lines)
-                    sources.append(s)
-        return sources
-    except:
-        return []
-# to convert the jupyter notebook to python script
-
-def build_ast(code):
-    try:
-        tree = ast.parse(code, mode='exec')
-        return tree
-    except Exception as e:  # to avoid non-python code
-        print("Syntax Error!!!", e)
-        return None
 

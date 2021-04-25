@@ -1,0 +1,6 @@
+/mnt/fit-Knowledgezoo/Github_repos_download/data/dalalkrish@Bike-demand-predictions/Your_first_neural_network.ipynb
+{'unittest.TextTestRunner.run', 'matplotlib.pyplot.legend', 'pandas.get_dummies', 'numpy.random.choice', 'matplotlib.pyplot.subplots', 'sys.stdout.write', 'numpy.mean', 'unittest.TestLoader.loadTestsFromModule', 'pandas.concat.plot', 'unittest.TestLoader', 'numpy.arange', 'numpy.array', 'unittest.TextTestRunner', 'numpy.zeros', 'pandas.concat.drop', 'pandas.concat', 'matplotlib.pyplot.plot', 'numpy.dot', 'matplotlib.pyplot.ylim', 'pandas.read_csv', 'sys.stdout.flush', 'numpy.array.copy', 'numpy.exp', 'pandas.concat.head', 'numpy.allclose', 'numpy.random.normal', 'numpy.all', 'pandas.to_datetime'}
+{'matplotlib': None, 'pandas': None, 'numpy': ['1.7.0', '1.7.1', '1.7.2', '1.8.0', '1.8.1', '1.8.2', '1.9.0', '1.9.1', '1.9.2', '1.9.3', '1.10.0', '1.10.1', '1.10.2', '1.10.3', '1.10.4', '1.11.0', '1.11.1rc1', '1.11.1', '1.11.2rc1', '1.11.2', '1.11.3', '1.12.0b1', '1.12.0rc1', '1.12.0rc2', '1.12.0', '1.12.1rc1', '1.12.1']}
+matplotlib
+pandas
+numpy>=1.7.0,<=1.12.1

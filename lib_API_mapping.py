@@ -6,6 +6,7 @@ import json
 from queue import Queue
 from copy import deepcopy
 from core import *
+from core.source_visitor import SourceVisitor
 from wheel_inspect import inspect_wheel
 import tarfile
 from zipfile import ZipFile
@@ -61,10 +62,12 @@ def parse_pyx(filename):
 
 def extract_class(filename):
     try:
+        print(filename)
         source = open(filename).read()
         tree = ast.parse(source, mode='exec')
         visitor = SourceVisitor()
         visitor.visit(tree)
+        print('testing')
         return visitor.result, tree
     except Exception as e:  # to avoid non-python code
         # fail passing python3 
@@ -82,6 +85,7 @@ def extract_class_from_source(source):
         #if filename[-3:] == 'pyx':
         #    #print(filename)
         #    parse_pyx(filename)
+        print(e)
         return {}, None# return empty 
 
 def build_dir_tree(node):
@@ -175,9 +179,6 @@ def tree_infer_levels(root_node):
         tmp_node = working_queue.pop(0)
         if tmp_node.name.endswith('.py') == True:
             leaf_stack.append(tmp_node)
-        # to determine the order
-        # to do 
-        #module_level_graph(root_node, tmp_node)
         working_queue.extend(tmp_node.children)
 
     # visit all elements from the stack
@@ -317,7 +318,6 @@ def process_single_module(module_path):
 def main():
     lib_dir = sys.argv[1]
     lib_name = sys.argv[2]
-    lib_name =  lib_dir.split('/')[-1]
     versions = os.listdir(lib_dir)
     versions.sort(key=lambda x:parse_version(x))
 
@@ -326,6 +326,7 @@ def main():
 
     for v in versions:
         v_dir = os.path.join(lib_dir, v)
+        print(v_dir)
         entry_points  = process_wheel(v_dir, lib_name)
         if entry_points is not None:
             API_data['module'] = entry_points
@@ -338,10 +339,10 @@ def main():
                       API_data['API'][name] = [v]
                   else:
                       API_data['API'][name] += [v]
-
     f = open("{}.json".format(lib_name), 'w')
     f.write(json.dumps(API_data))
     f.close()
+    print(lib_name)
 
 if __name__ == '__main__':
     main()

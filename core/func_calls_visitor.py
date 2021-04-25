@@ -1,30 +1,15 @@
 import ast
 from collections import deque
+from .dependency_graph_utils import iter_child_nodes
 from ast import NodeVisitor
-'''
-visit keyword arguments
-'''
-class KWVisitor(ast.NodeVisitor):
-    def __init__(self):
-        self._name = []
 
-    @property
-    def name(self):
-        return ",".join(self._name)
-
-    def visit_keyword(self, node):
-        if node.arg is not None:
-            self._name.append(node.arg)
-
-'''
-visit function call nodes
-'''
 class FuncCallVisitor(ast.NodeVisitor):
     def __init__(self):
         self._name = deque()
+
     @property
     def name(self):
-        return ".".join(self._name)
+        return ('.'.join(self._name), "load")
 
     @name.deleter
     def name(self):
@@ -32,7 +17,7 @@ class FuncCallVisitor(ast.NodeVisitor):
 
     def visit_Name(self, node):
         self._name.appendleft(node.id)
-    # handle attrinutes of a function calls
+
     def visit_Attribute(self, node):
         try:
             self._name.appendleft(node.attr)
@@ -40,16 +25,16 @@ class FuncCallVisitor(ast.NodeVisitor):
         except AttributeError:
             self.generic_visit(node)
 
-def get_func_calls(tree):
+def get_func_calls(tree, extended=False):
     func_calls = []
     for node in ast.walk(tree):
         if isinstance(node, ast.Call):
-            call_visitor = FuncCallVisitor()
-            call_visitor.visit(node.func)
-            kw_visitor = KWVisitor()
-            try:
-                kw_visitor.visit(node)
-                func_calls += [(call_visitor.name, kw_visitor.name)]
-            except:
-                func_calls += [(call_visitor.name, "")]  # no keyword arguments found
+            if  (extended==True) or (not isinstance(node.func, ast.Attribute)):  # skip object memeber calls
+                callvisitor = FuncCallVisitor()
+                callvisitor.visit(node.func)
+                func_calls += [callvisitor.name]
+        elif isinstance(node, ast.FunctionDef):
+            func_calls += [(node.name, "def")]
+        elif isinstance(node, ast.Assign) and isinstance(node.value, ast.Lambda):
+            func_calls += [(node.targets[0].id, "def")]
     return func_calls

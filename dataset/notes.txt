@@ -1,0 +1,70 @@
+class-level  function level API changes
+
+
+cat req/ZeweiChu@AttentionBasedLanguageModeling
+
+
+extract import statements and then parse 
+
+if range max is the latest version. use >= instead
+
+API infer
+
+
+inline function to use a module
+optional dependency
+
+arkorobotics@Philo
+
+ImportError: Matplotlib requires numpy>=1.10.0; you have 1.8.2
+ImportError: Matplotlib requires numpy>=1.10.0; you have 1.8.2
+ImportError: Matplotlib requires numpy>=1.10.0; you have 1.8.2
+ImportError: Matplotlib requires numpy>=1.10.0; you have 1.8.2
+
+failed-filename: /mnt/fit-Knowledgezoo/Github_repos_download/data/arkorobotics@Philo/notebook/Cold_Gas_VTVL_Rocket_Design.ipynb
+
+
+install optional dependencies
+
+
+see if they are subset of single notebook modules
+
+run see any syntax error  
+
+
+
+keras does not include tensorflow as its dependencies
+one function call server for more than one APIs
+
+./core/generic.py:            from pandas.core.tools.datetimes import to_datetime
+./core/series.py:from pandas.core.tools.datetimes import to_datetime
+./core/dtypes/cast.py:                from pandas import to_datetime
+./core/dtypes/cast.py:            from pandas import to_datetime
+./core/dtypes/cast.py:            from pandas import to_datetime
+./core/dtypes/cast.py:    from pandas.core.tools.datetimes import to_datetime
+./core/api.py:from pandas.core.tools.datetimes import to_datetime
+./io/sql.py:from pandas.core.tools.datetimes import to_datetime
+./tests/series/test_combine_concat.py:        from pandas.core.tools.datetimes import to_datetime
+./tests/tseries/frequencies/test_inference.py:from pandas.core.tools.datetimes import to_datetime
+
+runtime function np.zeros = multiarray.zeros
+
+https://stackoverflow.com/questions/59474533/modulenotfounderror-no-module-named-numpy-testing-nosetester
+
+# conda 
+Python2 322  Python34 64  Other 59
+# req
+Python2 1405  Python34 195
+#pipfile
+
+Python2 24  Python34 2  Other 3
+union and itersection
+
+
+Python2 1827  Python34 255  Other 201
+
+252/ 3982 
+
+
+get_ipython().run_line_magic('reload_ext', 'rites.all')
+
