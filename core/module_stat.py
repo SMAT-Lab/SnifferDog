@@ -68,7 +68,7 @@ def get_module_names(filename, std_modules, local_folders):
         module_names = [name for name in module_names if name not in local_modules and name not in std_modules]
         return module_names
     except Exception as e :# to avoid non-python code
-        print("Syntax Error!!!", e)
+        print( e)
         return None
 
 
@@ -77,6 +77,37 @@ def main():
 
 def collect_module_single(repo_dir):
     local_folders = get_all_folder_names(repo_dir)
+   
+    all_fns_py =  get_path_by_extension(repo_dir, flag='.py')
+    all_fns_nb =  get_path_by_extension(repo_dir, flag='.ipynb')
+    all_fns = all_fns_py+all_fns_nb 
+    module_names = []
+    for fn in all_fns:
+        module_name_tmp = get_module_names(fn, std_modules, local_folders)
+        if module_name_tmp is not None:
+            module_names.extend(module_name_tmp)
+    module_names = list(set(module_names))
+    return module_names 
+
+def API_extracting_single(nb_path):
+    all_results = {}
+    module_names = collect_module_single(nb_path)
+    result = get_code_list(nb_path)
+    code = "".join(result)
+    func_calls_names= get_API_calls(code)
+    func_calls_names = [name.split(':')[0] for name in func_calls_names]
+    n_threads = 8
+    results = {}
+    with Pool(n_threads) as pool:
+        all_file_names = get_path_by_extension(repo_path)
+        tmp_res = pool.map(single_file, all_file_names)
+        tmp_res = tmp_res + func_calls_names
+        results = {'API':tmp_res, 'module': module_names}
+    return results
+
+def collect_module_single_file(repo_dir):
+    local_folders = get_all_folder_names(repo_dir)
+    
     all_fns_py =  get_path_by_extension(repo_dir, flag='.py')
     all_fns_nb =  get_path_by_extension(repo_dir, flag='.ipynb')
     all_fns = all_fns_py+all_fns_nb 
@@ -92,29 +123,21 @@ def collect_module_single(repo_dir):
         os.chdir(pwd)
     module_names = list(set(module_names))
     return module_names 
-
-def API_extracting_single(nb_path):
+def API_extracting_single_file(nb_path):
     all_results = {}
-    #module_repos = json.loads(open('mining_API/data/module_repos.json').read())
-    repo_name = nb_path.split('/')[5]
-    print(nb_path)
-    repo_path = "/".join(nb_path.split('/')[:6])
-    module_names = collect_module_single(repo_path)
     result = get_code_list(nb_path)
-    code = "".join(result)
+
+    code = "\n".join(result)
+    
     func_calls_names= get_API_calls(code)
+    
     func_calls_names = [name.split(':')[0] for name in func_calls_names]
-    n_threads = 8
-    results = {}
-    with Pool(n_threads) as pool:
-        all_file_names = get_path_by_extension(repo_path)
-        tmp_res = pool.map(single_file, all_file_names)
-        tmp_res = tmp_res + func_calls_names
-        results = {'API':tmp_res, 'module': module_names}
+ 
+    folder_name = os.path.dirname(nb_path)
+    
+    module_names = collect_module_single(folder_name)
+    
+    results = {}    
+    results = {'API':func_calls_names, 'module': module_names}
+    print(results)
     return results
-#if __name__ == '__main__':
-    #main()
-    #module_stat_report()
-    #module_collect_repo()
-    #get_subject_repos()
-    #API_extracting()

@@ -1,4 +1,6 @@
 import ast
+import json 
+import os 
 from  _ast import *
 import pkgutil
 
@@ -53,7 +55,7 @@ def find_local_modules(import_smts):
             result  += [m_name]
     return result
 
-def get_path_by_extension(root_dir, num_of_required_paths, flag='.ipynb'):
+def get_path_by_extension(root_dir, flag='.ipynb'):
     paths = []
     for root, dirs, files in os.walk(root_dir):
         files = [f for f in files if not f[0] == '.'] 
@@ -61,7 +63,24 @@ def get_path_by_extension(root_dir, num_of_required_paths, flag='.ipynb'):
         for file in files:
             if file.endswith(flag):
                 paths.append(os.path.join(root, file))
-                if len(paths) == num_of_required_paths:
-                    return paths
+                #if len(paths) == num_of_required_paths:
+                #    return paths
     return paths
-
+def get_code_list(path):
+    content = open(path).read()
+    content = json.loads(content)
+    if 'worksheets' in content:
+        cells = content['worksheets'][0]['cells']
+        source_flag = 'input'
+    else:
+        cells = content['cells']
+        source_flag = 'source'
+    cells = list(filter(lambda x:x['cell_type']=='code', cells))
+    sources = []
+    for cell in cells:
+        # filter out cells without execution count
+        # remove magic functions
+        code_lines = list(filter(lambda x:x[0] not in ['%', '!', '#'], cell[source_flag])) #
+        s = "".join(code_lines)
+        sources.append(s)
+    return sources
