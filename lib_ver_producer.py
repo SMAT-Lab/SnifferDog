@@ -9,7 +9,7 @@ from functools import cmp_to_key
 import nbformat
 import ast
 from core.API_name_formating import  get_API_calls 
-from core.module_stat import  API_extracting_single 
+from core.module_stat import  API_extracting_single, API_extracting_single_file  
 
 # parse a single lib's all APIs
 def parse_lib_APIs(lines):
@@ -135,31 +135,30 @@ def lst_unfold(lst):
 def main():
     nb_path = sys.argv[1]
     req_entries = []
-    used_API_info = API_extracting_single(nb_path)
+    used_API_info = API_extracting_single_file(nb_path)
     tmp_module = used_API_info['module']
     tmp_API = used_API_info['API']
     tmp_API = lst_unfold(tmp_API)
     #print(tmp_API)
-    #m2p, API_DB = load_API_bank()
-    return 
-
+    m2p, API_DB = load_API_bank()
+    
     if all(x in m2p for x in tmp_module):
         result = {}
         package_names = [m2p[m_name] for m_name in tmp_module if m_name in m2p]
         package_names = set(package_names)
-        #req_path = os.path.join(target_dir, repo_name)
+
         if len(tmp_API) == 0:
+            # no APIs can be extracted
             for pn in package_names:
                 entry = "{}".format(pn)
                 req_entries.append(entry)
-            #f = open(req_path, 'w')
-            #req_content = "\n".join(req_entries)
-            #print(len(req_entries))
-            #f.write(req_content)
-            #f.close()
+        
         else:
             for API in tmp_API:
                 m_name = API.split('.')[0]
+                if m_name not in m2p:
+                    # this can be from local folders
+                    continue
                 tmp_package_name = m2p[m_name]
                 versions = API_version_lookup(API_DB[tmp_package_name], API)
                 if m_name in result:
@@ -182,11 +181,11 @@ def main():
                     entry = "{}".format(k)
                     req_entries.append(entry)
             req_content = "\n".join(req_entries)
-            #print(len(req_entries))
-            print(req_content)
-            #f = open(req_path, 'w')
-            #f.write(req_content)
-            #f.close()
+        else:
+            print("Might contain some packages that are not included in our API Bank database! It would be great if you can report this to us!")
+    print(req_content)
+ 
+         
 if __name__ == '__main__':
     main()
 
